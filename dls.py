@@ -1,11 +1,16 @@
-def dls(visited, graph, node, depth, limit):
+def dls(visited, graph, node, depth, limit, goal):
     if depth > limit:
-        return
+        return False
     if node not in visited:
         print(node, end="->")
+        if node == goal:
+            print("Goal reached!")
+            return True
         visited.add(node)
         for side in graph[node]:
-            dls(visited, graph, side, depth + 1, limit)
+            if dls(visited, graph, side, depth + 1, limit, goal): 
+                return True
+    return False
 
 def input_graph():
     graph = {}
@@ -18,11 +23,12 @@ def input_graph():
     
     return graph
 
-# Take the graph input from the user
 graph = input_graph()
 
-# Start DFS traversal from the specified start node
 start_node = input("Enter the start node for DLS traversal: ")
+goal = input("Enter the goal node: ")
 depth_limit = int(input("Enter the depth limit: "))
+
 visited = set()
-dls(visited, graph, start_node, 0, depth_limit)
+if not dls(visited, graph, start_node, 0, depth_limit, goal):
+    print("Goal not found within the depth limit.")
