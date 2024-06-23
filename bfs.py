@@ -1,18 +1,22 @@
-visited = []
-queue = []
+visited=[]
+queue=[]
 
-def bfs(visited,graph,node):
-	visited.append(node)
-	queue.append(node)
-	
-	while queue:
-		m=queue.pop(0)
-		print(m,end="")
-		
-		for side in graph[m]:
-			if side not in visited:
-				visited.append(side)
-				queue.append(side)
+def bfs(visited, graph, node, goal):
+    visited.append(node)
+    queue.append(node)
+    
+    while queue:
+        m = queue.pop(0)
+        print(m, end="->")
+        
+        if m == goal:
+            print("Goal reached!")
+            return
+        
+        for side in graph[m]:
+            if side not in visited:
+                visited.append(side)
+                queue.append(side)
 
 def input_graph():
     graph = {}
@@ -25,10 +29,8 @@ def input_graph():
     
     return graph
 
-
-# Take the graph input from the user
 graph = input_graph()
 
-# Start BFS traversal from the specified start node
 start_node = input("Enter the start node for BFS traversal: ")
-bfs(visited, graph, start_node)
+goal = input("Enter the goal node: ")
+bfs(visited, graph, start_node, goal)
