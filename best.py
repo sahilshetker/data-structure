@@ -1,19 +1,26 @@
-import heapq #heapq is a prority queue
-
-def best_first_search(graph, start, heuristic):
+import heapq
+def best_first_search(graph, start, goal, heuristic):
     visited = set()
-    priority_queue = [(heuristic[start], start)] #hear it adds the star element and its huristic value in the queue
+    priority_queue = [(heuristic[start], start)]
+    path = []
     
     while priority_queue:
         _, node = heapq.heappop(priority_queue)
         
         if node not in visited:
-            print(node, end="->")
+            path.append(node)
             visited.add(node)
+            
+            if node == goal:
+                print("->".join(path))
+                print("Goal reached!")
+                return
             
             for neighbor in graph[node]:
                 if neighbor not in visited:
                     heapq.heappush(priority_queue, (heuristic[neighbor], neighbor))
+    
+    print("Goal not found.")
 
 def input_graph():
     graph = {}
@@ -33,12 +40,10 @@ def input_heuristics(graph):
         heuristic[node] = h_value
     return heuristic
 
-# Take the graph input from the user
 graph = input_graph()
 
-# Take the heuristic values input from the user
 heuristic = input_heuristics(graph)
 
-# Start Best-First Search traversal from the specified start node
 start_node = input("Enter the start node for Best-First Search traversal: ")
-best_first_search(graph, start_node, heuristic)
+goal_node = input("Enter the goal node: ")
+best_first_search(graph, start_node, goal_node, heuristic)
